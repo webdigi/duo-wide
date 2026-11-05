@@ -22,8 +22,10 @@
   const STYLE_ID = 'duo-wide-width-style';
   const style = document.createElement('style');
   style.id = STYLE_ID;
-  // Preserve the exact working bookmarklet width adjustment.
-  style.textContent = 'html{overflow-x:hidden!important}body{width:calc(100% + 64px)!important;max-width:none!important;overflow-x:hidden!important;margin-right:0!important}';
+  // `overflow-x: clip` hides the extra 64px without making <body> a scroll
+  // container, so `position: sticky` descendants keep working. The `hidden`
+  // declaration is a fallback for browsers without `clip` support (Safari < 16).
+  style.textContent = 'html{overflow-x:hidden!important}body{width:calc(100% + 64px)!important;max-width:none!important;overflow-x:hidden!important;overflow-x:clip!important;margin-right:0!important}';
   (document.head || root).appendChild(style);
 
   // Recognize at most one action per two-finger gesture.
